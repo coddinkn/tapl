@@ -12,7 +12,9 @@ replace n (Var s) r = if s == n
 	then r
 	else (Var s)
 replace n (App a b) r = (App (replace n a r) (replace n b r))
-replace n (Abs v t) r = (Abs v (replace n t r))
+replace n (Abs v t) r = if v /= n
+	then (Abs v (replace n t r))
+	else (Abs v t)
 
 substitute :: Term -> Term -> Term
 substitute (Abs a aTerm) (Abs b bTerm) = replace a aTerm (Abs b bTerm)
